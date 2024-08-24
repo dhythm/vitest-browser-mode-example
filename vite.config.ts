@@ -11,6 +11,7 @@ export default defineConfig({
       headless: true,
       name: "chromium",
       provider: "playwright",
+      screenshotFailures: false,
     },
     globals: true,
     include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
