@@ -1,16 +1,33 @@
 import { chromeStorage } from "../chrome-storage";
 
+const key1 = "key1";
+const key2 = "key2";
+const value1 = "value1";
+const value2 = "value2";
+
 test("chromeStorage.setItem", () => {
-  chromeStorage.setItem("key1", "value1");
-  chromeStorage.setItem("key2", "value2");
+  chromeStorage.setItem(key1, value1);
+  chromeStorage.setItem(key2, value2);
   expect(chrome.storage.local.set).toHaveBeenCalledWith(
-    { key1: "value1" },
+    { [key1]: value1 },
     expect.anything()
   );
   expect(chrome.storage.local.set).toHaveBeenCalledWith(
-    { key2: "value2" },
+    { [key2]: value2 },
     expect.anything()
   );
+});
+
+test("chromeStorage.getItem", async () => {
+  chrome.storage.local.get = vi
+    .fn()
+    .mockImplementation(
+      async (_key, resolve) => await resolve({ [key1]: value1, [key2]: value2 })
+    );
+  const storedValue1 = await chromeStorage.getItem(key1);
+  const storedValue2 = await chromeStorage.getItem(key2);
+  expect(storedValue1).toBe(value1);
+  expect(storedValue2).toBe(value2);
 });
 
 test("chromeStorage.subscribe", () => {
