@@ -1,3 +1,5 @@
+import { parseWebStorageValue } from "./utils/web-storage";
+
 const createOldKey = (key: string) => `old/${key}`;
 export const localStorage = {
   async getItem(key: string) {
@@ -32,13 +34,9 @@ export const localStorage = {
   ) {
     const listener = (event: StorageEvent) => {
       if (event.storageArea === window.localStorage && event.key === key) {
-        const newValue =
-          event.newValue === null ? null : JSON.parse(event.newValue);
-        const oldValue =
-          event.oldValue === null ? null : JSON.parse(event.oldValue);
         callback({
-          newValue,
-          oldValue,
+          newValue: parseWebStorageValue(event.newValue),
+          oldValue: parseWebStorageValue(event.oldValue),
         });
       }
     };

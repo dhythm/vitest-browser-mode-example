@@ -1,3 +1,5 @@
+import { parseWebStorageValue } from "./utils/web-storage";
+
 export const sessionStorage = {
   async getItem(key: string) {
     try {
@@ -24,11 +26,10 @@ export const sessionStorage = {
   ) {
     const listener = (event: StorageEvent) => {
       if (event.storageArea === window.sessionStorage && event.key === key) {
-        const newValue =
-          event.newValue === null ? null : JSON.parse(event.newValue);
-        const oldValue =
-          event.oldValue === null ? null : JSON.parse(event.oldValue);
-        callback({ newValue, oldValue });
+        callback({
+          newValue: parseWebStorageValue(event.newValue),
+          oldValue: parseWebStorageValue(event.oldValue),
+        });
       }
     };
     window.addEventListener("storage", listener);
