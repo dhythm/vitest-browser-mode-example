@@ -5,9 +5,9 @@ const key2 = "key2";
 const value1 = "value1";
 const value2 = "value2";
 
-test("chromeStorage.setItem", () => {
-  chromeStorage.setItem(key1, value1);
-  chromeStorage.setItem(key2, value2);
+test("chromeStorage.setItem", async () => {
+  await chromeStorage.setItem(key1, value1);
+  await chromeStorage.setItem(key2, value2);
   expect(chrome.storage.local.set).toHaveBeenCalledWith(
     { [key1]: value1 },
     expect.anything()
